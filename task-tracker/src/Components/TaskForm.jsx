@@ -1,42 +1,53 @@
-import React, { useState } from 'react';
+// TaskForm.jsx
+import React from "react";
+import { useTaskForm } from "./useTaskForm";
 
-// Form to add a new task with title and optional notes
+/**
+ * The TaskForm component renders a form for adding a new task. It uses the useTaskForm hook to manage the state
+ * of the form fields and validity. The form has two input fields, one for the task title and one for the
+ * task notes. The task title is required, and the form will not submit if it is empty. The form has a
+ * single submit button which is disabled if the form is not valid.
+ *
+ * @param {function} onAdd The function to call when the form is submitted with valid data. It is passed the
+ * task object as an argument.
+ * @returns {JSX.Element} The TaskForm component.
+ */
 export default function TaskForm({ onAdd }) {
-  // Local state for form inputs
-  const [title, setTitle] = useState('');
-  const [notes, setNotes] = useState('');
-  function handleSubmit(e) {
-    e.preventDefault();
-    // Prevent adding empty titles
-    if (!title.trim()) return;
-    onAdd({
-      // Trim whitespace from inputs
-      title: title.trim(),
-      notes: notes.trim()
-    });
-    // Clear form after submission
-    setTitle('');
-    setNotes('');
-  }
-// Form layout with Tailwind styling
+  const {
+    title, setTitle,
+    notes, setNotes,
+    isValid,
+    submitWith,
+    titleRef,
+  } = useTaskForm();
+
   return (
-    <form className="flex flex-col gap-2 md:flex-row items-start justify-center mb-8" onSubmit={handleSubmit}>
+    // Form wrapper
+    <form
+      className="flex flex-col gap-2 md:flex-row items-start justify-center md:gap-4 mt-8"
+      onSubmit={submitWith(onAdd)}
+    >
       <input
-        className="border rounded p-2 flex-1 text-lg shadow"
+      // Task title input
+        ref={titleRef}
+        className="border rounded p-2 flex-1 text-lg shadow mt-9 min-h-[50px]"
         placeholder="Task title (required)"
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
         required
       />
       <input
-        className="border rounded p-2 flex-1 text-lg shadow"
+      // Task notes input
+        className="border rounded p-2 flex-1 text-lg shadow mt-9 min-h-[50px]"
         placeholder="Notes (optional)"
         value={notes}
-        onChange={e => setNotes(e.target.value)}
+        onChange={(e) => setNotes(e.target.value)}
       />
       <button
-        className="bg-blue-600 text-white px-5 py-2 rounded font-semibold text-lg hover:bg-blue-700 shadow"
+      // Submit button
+        className="bg-blue-600 text-white px-5 py-2 rounded font-semibold text-lg hover:bg-blue-700 shadow mt-9 min-h-[50px] disabled:opacity-50"
         type="submit"
+        disabled={!isValid}
       >
         Add Task
       </button>

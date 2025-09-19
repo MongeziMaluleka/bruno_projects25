@@ -75,10 +75,10 @@ export default function App() {
 
   return (
     <div className="bg-gradient-to-br from-blue-100 to-white min-h-screen font-sans">
-      <header className="bg-blue-700 py-5 text-white shadow text-center text-3xl font-bold tracking-wide">
-        Task Tracker
+      <header className="bg-transparent border-b border-blue-700 py-5 mb-6 shadow text-center text-3xl font-bold tracking-wide">
+        TASK TRACKER
       </header>
-      <main className="max-w-5xl mx-auto px-3 py-6">
+      <main className="max-w-6xl mx-auto px-4 pb-10 bg-slate-500 " style={{ borderRadius: '12px' ,marginTop: '101px'}}>
         <TaskForm onAdd={addTask} />
         <TaskBoard tasks={tasks} onMove={moveTask} onDelete={deleteTask} />
       </main>
